@@ -1,8 +1,9 @@
 resource "google_compute_instance" "app" {
-  name         = "reddit-app"
+  name         = "reddit-app-${count.index + 1}"
   machine_type = "g1-small"
   zone         = "europe-west1-b"
   tags         = ["reddit-app"]
+  count        = "${var.instances_count}"
 
   boot_disk {
     initialize_params {
@@ -11,20 +12,13 @@ resource "google_compute_instance" "app" {
   }
 
   network_interface {
-    network = "default"
-
-    access_config = {
-      nat_ip = "${google_compute_address.app_ip.address}"
-    }
+    network       = "default"
+    access_config = {}
   }
 
   metadata {
     sshKeys = "appuser:${file(var.public_key_path)}"
   }
-}
-
-resource "google_compute_address" "app_ip" {
-  name = "reddit-app-ip"
 }
 
 resource "google_compute_firewall" "firewall_puma" {
