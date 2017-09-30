@@ -7,3 +7,6 @@ backend.tf
 *.retry
 .vagrant/
 *.log
+.molecule
+.cache
+*.pyc
