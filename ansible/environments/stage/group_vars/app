@@ -1,1 +1,10 @@
 db_host: 10.132.0.3
+nginx_sites:
+  reddit_app:
+    - listen 80
+    - server_name reddit_app
+    - root /home/appuser/reddit
+    - location / { proxy_pass http://reddit_backend; }
+nginx_configs:
+  upstream:
+    - upstream reddit_backend { server 127.0.0.1:9292; }
