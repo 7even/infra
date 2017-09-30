@@ -1,7 +1,12 @@
 ---
 - name: Configure application server
   hosts: app
+  gather_facts: false
   become: true
+  pre_tasks:
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+      changed_when: false
   roles:
     - app
-    - jdauphant.nginx
+    # - jdauphant.nginx
